@@ -8,17 +8,24 @@ const bcrypt = require('bcrypt');
 const plainText = "Hello World";
 const loginPassword = "Hello World";
 
-function hashPassword(password) { 
-    return bcrypt.hashSync(password, saltRounds);
+async function hashPassword(password) { 
+    const result = await bcrypt.hash(password, saltRounds)
+
+    return result
 } 
 
-function checkPassword(loginPassword, hashedPassword) { 
-    return bcrypt.compareSync(loginPassword, hashedPassword);
+async function checkPassword(loginPassword, hashedPassword) { 
+    const result = await bcrypt.compareSync(loginPassword, hashedPassword)
+
+    return result
 } 
 
 function main() { 
-    const hashedPassword = hashPassword(plainText, 10);
-    console.log(checkPassword(loginPassword, hashedPassword))
+    hashPassword(plainText, 10)
+    .then(password => checkPassword(loginPassword, password)
+    .then(result => console.log(result)))
+    
+    //console.log(checkPassword(loginPassword, hashedPassword))
 }
 
 if (require.main === module) {
